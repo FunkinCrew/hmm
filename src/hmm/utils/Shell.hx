@@ -119,7 +119,7 @@ class Shell {
     var result = { statusCode: commandResult.statusCode, isInstalled: false, path: null, libraryName: null, version: null };
     var notInstalledRegex = ~/is not installed/i;
     var versionRegex = ~/^\s*-D\s*(.*)=(.*)\s*$/;
-    var pathRegex = ~/^(\/|[A-Z]:)/;
+    var pathRegex = ~/^(\/|[a-zA-Z]:)/;
     for (line in outputLines) {
       var outputLine = line.trim();
       if (notInstalledRegex.match(outputLine)) {
