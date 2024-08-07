@@ -30,6 +30,8 @@ hmm version # 3.1.0 Funkin' Crew Edition
 - When `haxelib path` returns an error when running `hmm install` or `hmm reinstall`, 
 we just assume that the library wasn't installed correctly the first time, so we install it 
 as if it was never installed.
+- Fix for checking haxelib git remotes. Previous behaviour would take a ssh formed git remote url and an https formed git remote would be different, even if they lead to the same place. This affects users who might have a git config that automatically changes remote urls to ssh versions, and accomodates for them.
+- Adds SHA1 to `hmm version` command
 
 # Installing hmm
 
