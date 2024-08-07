@@ -124,8 +124,10 @@ class Shell {
       var outputLine = line.trim();
       if (notInstalledRegex.match(outputLine) || commandResult.statusCode != 0) {
         result.isInstalled = false;
+        result.statusCode = commandResult.statusCode;
         return result;
       }
+
       result.isInstalled = true;
       if (result.path == null && pathRegex.match(outputLine)) {
         // capture the path to the library if it has not yet been captured
@@ -219,9 +221,9 @@ class Shell {
           }
           return true;
         case Some(remote) :
-          if (remote != url) {
+          if (normalizeGitUrl(remote) != normalizeGitUrl(url)) {
             if (options.log) {
-              Log.warning('git library: "$name" (url: "${url}") does not match currently-installed url: "${remote}"');
+              Log.warning('git library: "${normalizeGitUrl(remote)}" (url: "${normalizeGitUrl(url)}") does not match currently-installed url: "${normalizeGitUrl(remote)}"');
             }
             return false;
           }
@@ -265,6 +267,28 @@ class Shell {
           }
       }
     }
+  }
+  
+  // Do not call me evil... I used ai to write this regexp bullshit...
+  private static final gitRegex = ~/^(https:\/\/|git@)([^\/]+)[\/:](.+?)(\.git)?$/;
+
+  // Normalize git remote urls, some git config options automatically change https -> ssh git urls, we dont care about that
+  // as long as the library is the same
+  public static function normalizeGitUrl(url: String): String {
+    if (gitRegex.match(url)) {
+        var domain = gitRegex.matched(2);
+        var path = gitRegex.matched(3);
+        
+        // Replace ":" in ssh based urls with slashes
+        domain = StringTools.replace(domain, ":", "/");
+
+        // Remove .git extension if present
+        path = StringTools.replace(path, ".git", "");
+        
+        // Convert to lowercase for case-insensitive comparison
+        return (domain + "/" + path).toLowerCase();
+    }
+    return "";  // Return empty string if URL doesn't match expected format
   }
 
   public static function isAlreadyInstalledMercurial(name : String, url : String, ref: Option<String>, dir: Option<String>, options: ShellOptions) : Bool {
