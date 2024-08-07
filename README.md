@@ -21,7 +21,7 @@ A series of changes made internally at Funkin' Crew Inc. such as bugfixes, QoL, 
 ### Funkin' Crew Edition Usage
 If you want to use the Funkin' Crew Edition of `hmm`
 ```
-haxelib git hmm https://github.com/FunkinCrew/hmm.git
+haxelib git hmm https://github.com/FunkinCrew/hmm.git funkin-patches
 haxelib run hmm setup
 hmm version # 3.1.0 Funkin' Crew Edition
 ```
