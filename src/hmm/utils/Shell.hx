@@ -122,7 +122,7 @@ class Shell {
     var pathRegex = ~/^(\/|[a-zA-Z]:)/;
     for (line in outputLines) {
       var outputLine = line.trim();
-      if (notInstalledRegex.match(outputLine)) {
+      if (notInstalledRegex.match(outputLine) || commandResult.statusCode != 0) {
         result.isInstalled = false;
         return result;
       }
