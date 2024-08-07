@@ -1,5 +1,6 @@
 package hmm;
 
+import thx.Options;
 import haxe.Json;
 import haxe.ds.Option;
 import haxe.io.Path;
@@ -50,6 +51,12 @@ class HmmConfigs {
     var content = sys.io.File.getContent(path);
     var data = Json.parse(content);
     return data.version;
+  }
+
+  public static function getHmmGitRef():String {
+    var path = Shell.hmmDirectory;
+    
+    return Options.get(Shell.gitRevParse(path, "HEAD", { log: false, throwError: false }));
   }
 
   public static function readHmmJson():VNel<String, HmmConfig> {

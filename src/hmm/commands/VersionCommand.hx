@@ -17,7 +17,9 @@ class VersionCommand implements ICommand {
 
   public function run(args : Array<String>) {
     
-    Log.println(HmmConfigs.getVersion() + " Funkin' Crew Edition");
+    Log.println(HmmConfigs.getVersion());
+    Log.println('Funkin\' Crew Edition');
+    Log.println(HmmConfigs.getHmmGitRef());
   }
 
   public function getUsage() {
