@@ -31,7 +31,7 @@ class ReinstallCommand implements ICommand {
     var hmmNames = config.dependencies.map(LibraryConfigs.getName);
 
     var force = Args.hasAny(args, ["-f", "--force"]);
-    var names = Args.removeAll(args, ["-f", "--force"]);
+    var names = Args.removeAll(args, ["-f", "--force", "-q", "--quiet"]);
 
     var invalidNames : Array<String> = [];
     for (name in names) {
