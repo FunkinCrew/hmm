@@ -78,8 +78,14 @@ class LockVersionCommand implements ICommand {
 ';
   }
 
+  function periodsToComma(str:String):String
+  {
+    return str.split('.').join(',');
+  }
+
   function lockHgVersion(name : String, url : String, ref : Option<String>, dir : Option<String>) {
-    if (!FileSystem.exists('.haxelib/$name/hg/.hg')) throw new ValidationError('Library $name is not checked out', 1);
+    if (!FileSystem.exists('.haxelib/${periodsToComma(name)}/hg/.hg')) throw new ValidationError('Library $name is not checked out', 1);
+
 
     var newRef = getHgRef(name);
     
@@ -109,16 +115,16 @@ class LockVersionCommand implements ICommand {
   }
 
   function lockGitVersion(name : String, url : String, ref : Option<String>, dir : Option<String>, longId : Bool) {
-    if (!FileSystem.exists('.haxelib/$name/git/.git')) throw new ValidationError('Library $name is not checked out', 1);
+    if (!FileSystem.exists('.haxelib/${periodsToComma(name)}/git/.git')) throw new ValidationError('Library $name is not checked out', 1);
 
-    var newRef = getGitRef(name, longId);
+    var newRef = getGitRef(periodsToComma(name), longId);
     
     if (switch ref {
       case None: true;
       case Some(currentRef): currentRef != newRef;
     }) {
       Log.info('Lock $name to ref "${newRef}"');
-      HmmConfigs.addDependencyOrThrow(Git(name, url, Some(newRef), dir), true);
+      HmmConfigs.addDependencyOrThrow(Git(periodsToComma(name), url, Some(newRef), dir), true);
       return true;
     }
     return false;
@@ -147,7 +153,7 @@ class LockVersionCommand implements ICommand {
   }
 
   function lockHaxelibVersion(name : String, version: Option<String>) {
-      var result = Shell.haxelibPath(name, { log: false, throwError: false });
+      var result = Shell.haxelibPath(periodsToComma(name), { log: false, throwError: false });
       if (!result.isInstalled) throw new ValidationError('Library $name is not installed', 1);
       var newVersion = result.version;
       
@@ -156,7 +162,7 @@ class LockVersionCommand implements ICommand {
         case Some(currentVersion): currentVersion != newVersion;
       }) {
         Log.info('Lock $name to version ${newVersion}');
-        HmmConfigs.addDependencyOrThrow(Haxelib(name, Some(newVersion)), true);
+        HmmConfigs.addDependencyOrThrow(Haxelib(periodsToComma(name), Some(newVersion)), true);
         return true;
       }
       return false;
