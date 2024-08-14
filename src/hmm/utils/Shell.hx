@@ -222,8 +222,10 @@ class Shell {
           return true;
         case Some(remote) :
           if (normalizeGitUrl(remote) != normalizeGitUrl(url)) {
+            Log.warning('git library: "$name" (url: "${normalizeGitUrl(url)}") does not match currently-installed url: "${normalizeGitUrl(remote)}"');
+            
             if (options.log) {
-              Log.warning('git library: "${normalizeGitUrl(remote)}" (url: "${normalizeGitUrl(url)}") does not match currently-installed url: "${normalizeGitUrl(remote)}"');
+              Log.warning('git library: "$name" (url: "${normalizeGitUrl(url)}") does not match currently-installed url: "${normalizeGitUrl(remote)}"');
             }
             return false;
           }
@@ -357,7 +359,7 @@ class Shell {
   public static function gitRemoteGetUrl(path : String, remote : String, options: { log: Bool, throwError: Bool }) : Option<String> {
     var oldCwd = Shell.workingDirectory;
     setCwd(path, options);
-    var remoteGetUrlResult = readCommand("git", ["remote", "get-url", remote], options);
+    var remoteGetUrlResult = readCommand("git", ["config", "--get", 'remote.$remote.url'], options);
     setCwd(oldCwd, options);
     return if (remoteGetUrlResult.statusCode != 0) {
       None;
