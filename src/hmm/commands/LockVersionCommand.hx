@@ -124,7 +124,7 @@ class LockVersionCommand implements ICommand {
       case Some(currentRef): currentRef != newRef;
     }) {
       Log.info('Lock $name to ref "${newRef}"');
-      HmmConfigs.addDependencyOrThrow(Git(periodsToComma(name), url, Some(newRef), dir), true);
+      HmmConfigs.addDependencyOrThrow(Git(name, url, Some(newRef), dir), true);
       return true;
     }
     return false;
