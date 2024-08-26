@@ -1,5 +1,5 @@
 -cp src
--lib thx.core:0.44.0
+-lib thx.core
 
 --each
 
@@ -8,7 +8,7 @@
 
 --next
 
--lib utest:1.13.2
+-lib utest
 -cp test
 -main TestAll
 -neko bin/test-all.n

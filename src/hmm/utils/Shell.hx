@@ -144,12 +144,10 @@ class Shell {
   }
 
   public static function haxelib(args : Array<String>, options: ShellOptions) : Void {
-    // Always pass the --never option to haxelib, to answer no to all questions
-    var commandArgs = ["--never"].concat(args);
     if (isQuiet) {
-      commandArgs.push("--quiet");
+      args.push("--quiet");
     }
-    runCommand("haxelib", commandArgs, options);
+    runCommand("haxelib", args, options);
   }
 
   public static function isAlreadyInstalled(library : LibraryConfig, options: ShellOptions) : Bool {

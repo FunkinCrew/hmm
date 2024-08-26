@@ -2,13 +2,15 @@
   "dependencies": [
     {
       "name": "thx.core",
-      "type": "haxelib",
-      "version": "0.42.1"
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/fponticelli/thx.core"
     },
     {
       "name": "utest",
       "type": "haxelib",
-      "version": "1.5.0"
+      "version": "1.13.2"
     }
   ]
 }
