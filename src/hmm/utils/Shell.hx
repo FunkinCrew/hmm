@@ -112,11 +112,16 @@ class Shell {
     haxelib(["list"], options);
   }
 
+  public static function haxelibVersion(options: ShellOptions) : Void {
+    haxelib(["version"], options);
+  }
+
   public static function haxelibPath(libraryName : String, options: ShellOptions) : { statusCode: Int, isInstalled: Bool, ?path: String, ?libraryName: String, ?version: String } {
     var commandResult = readCommand("haxelib", ["path", libraryName], options);
     var outputString = commandResult.stdout;
     var outputLines = outputString.split("\n");
-    var result = { statusCode: commandResult.statusCode, isInstalled: false, path: null, libraryName: null, version: null };
+    var currentVersion = readCommand("haxelib", ["version", libraryName], options).stdout.trim();
+    var result = { statusCode: commandResult.statusCode, isInstalled: false, path: null, libraryName: null, version: currentVersion };
     var notInstalledRegex = ~/is not installed/i;
     var versionRegex = ~/^\s*-D\s*(.*)=(.*)\s*$/;
     var pathRegex = ~/^(\/|[a-zA-Z]:)/;
@@ -132,9 +137,8 @@ class Shell {
       if (result.path == null && pathRegex.match(outputLine)) {
         // capture the path to the library if it has not yet been captured
         result.path = outputLine;
-      } else if (result.libraryName == null && result.version == null && versionRegex.match(outputLine)) {
+      } else if (result.libraryName == null && versionRegex.match(outputLine)) {
         result.libraryName = versionRegex.matched(1);
-        result.version = versionRegex.matched(2);
       }
       if (result.isInstalled && result.path != null && result.libraryName != null && result.version != null) {
         return result;
