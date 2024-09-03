@@ -18,8 +18,6 @@ import hmm.utils.Log;
 class GitCommand implements ICommand {
   public var type(default, null) = "git";
 
-  public static var DEFAULT_REF = "master";
-
   public function new() {}
 
   public function run(args:Array<String>) {
@@ -32,7 +30,7 @@ class GitCommand implements ICommand {
 
     var name:String = args[0];
     var url:String = args[1];
-    var ref:Option<String> = Some(DEFAULT_REF);
+    var ref:Option<String> = None;
     var dir:Option<String> = None;
 
     if (args.length >= 3) {
@@ -61,7 +59,7 @@ class GitCommand implements ICommand {
         arguments:
         - name - the name of the library (required)
         - url - the clone url or path to the git repo (required)
-        - ref - the branch name/tag name/committish to use when installing/updating the library (default: "$DEFAULT_REF")
+        - ref - the branch name/tag name/committish to use when installing/updating the library (optional)
         - dir - the sub-directory in the git repo where the code is located (optional)
 
         ref and sub-directory are optional, however, to specify sub-directory, you must also specify the ref.
