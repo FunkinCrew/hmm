@@ -153,7 +153,7 @@ class LockVersionCommand implements ICommand {
   }
 
   function lockHaxelibVersion(name : String, version: Option<String>) {
-      var result = Shell.haxelibPath(periodsToComma(name), { log: false, throwError: false });
+      var result = Shell.haxelibPath(name, { log: false, throwError: false });
       if (!result.isInstalled) throw new ValidationError('Library $name is not installed', 1);
       var newVersion = result.version;
       
